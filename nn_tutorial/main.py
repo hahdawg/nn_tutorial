@@ -15,7 +15,7 @@ def train_ff_model(
     learning_rate: float,
     batch_generators: Tuple,
     logging_interval: int,
-):
+) -> nn.Module:
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = ntm.FeedForward(
         hidden_size=hidden_size,
