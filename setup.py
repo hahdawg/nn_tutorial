@@ -12,6 +12,9 @@ setup(
         "": ["*.yaml", "*.ini"]
     },
     install_requires=[
+        "torch>=1.8.0",
+        "numpy",
+        "scikit_learn"
     ],
     zip_safe=False
 )
