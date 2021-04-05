@@ -11,7 +11,7 @@ import nn_tutorial.model as ntm
 
 def train_ff_model(
     hidden_size: int,
-    num_steps: int,
+    max_steps: int,
     learning_rate: float,
     batch_generators: Tuple,
     logging_interval: int,
@@ -23,8 +23,11 @@ def train_ff_model(
         device=device
     )
 
-    loss_fcn = nn.NLLLoss()  # TODO: make this a function param
-    optimizer = optim.Adam(lr=learning_rate, params=model.parameters())  # TODO: make this a param
+    # TODO: make this a function param
+    loss_fcn = nn.NLLLoss()
+
+    # TODO: make this a param
+    optimizer = optim.Adam(lr=learning_rate, params=model.parameters())
 
     # TODO: Evaluate bg_te after we're done training
     bg_tr, bg_val, _ = batch_generators
@@ -35,9 +38,7 @@ def train_ff_model(
 
     # TODO: Implement early stopping
     # Hint: use torch.save whenever loss improves during the logging step
-    for step, (batch_tr, batch_val) in enumerate(zip(bg_tr, bg_val)):
-        if step >= num_steps:
-            break
+    for step, (batch_tr, batch_val) in enumerate(zip(bg_tr, bg_val), start=1):
 
         # Ensure that we move training data to the right device
         X_tr, y_tr = batch_tr
@@ -67,12 +68,15 @@ def train_ff_model(
             accuracy = (p_hat.argmax(dim=1) == y_val).float().mean()
             running_acc_val.append(accuracy.item())
 
-        if step % logging_interval == 0:
+        if (step % logging_interval == 0) | (step == 1):
             summary_tr = mean(running_loss_tr)
             summary_val_loss = mean(running_loss_val)
             summary_val_acc = mean(running_acc_val)
             msg = f"[step {step}]: loss_tr: {summary_tr:0.5f}    " + \
                 f"loss_val: {summary_val_loss:0.5f}    acc_val: {summary_val_acc:0.5f}"
             print(msg)
+
+        if step == max_steps:
+            break
 
     return model
