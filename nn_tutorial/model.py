@@ -3,12 +3,29 @@ import torch.nn as nn
 
 
 class FeedForward(nn.Module):
+    """
+    Classic feed forward network.
 
-    def __init__(self, hidden_size: int, num_outputs: int, device: str):
+    Parameters
+    ----------
+    hidden_size: int
+        Width of hidden layer
+    num_outputs: int
+        Number of classes to predict; for MNIST, it's 10
+    device: str
+        'cuda' or 'cpu'
+    num_inputs (optional): int
+        Number of input features; for MNIST, it's 28x28
+    """
+    def __init__(self, hidden_size: int, num_outputs: int, device: str, num_inputs: int = 0):
         # TODO: allow for multiple layers
-        # TODO: try dropout, batchnorm, etc
+        # TODO: try adding dropout, batchnorm, etc
         super().__init__()
-        self.hidden_layer = nn.LazyLinear(out_features=hidden_size)
+
+        if num_inputs:
+            self.hidden_layer = nn.Linear(in_features=hidden_size, out_features=num_outputs)
+        else:
+            self.hidden_layer = nn.LazyLinear(out_features=hidden_size)  # This is new
         self.output_layer = nn.Linear(in_features=hidden_size, out_features=num_outputs)
         self.relu = nn.ReLU()
         self.softmax = nn.Softmax()

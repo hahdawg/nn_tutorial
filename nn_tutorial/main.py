@@ -16,6 +16,25 @@ def train_ff_model(
     batch_generators: Tuple,
     logging_interval: int,
 ) -> nn.Module:
+    """
+    Train a model.
+
+    Parameters
+    ----------
+    hidden_size: int
+        Width of hidden layer.
+    max_steps: int
+        Maximum number of batches to use for training.
+    learning_rate: float
+        Learning rate for optimizer
+    batch_generators: (Generator)
+    logging_interval: int
+        Interval to use for logging.
+
+    Returns
+    -------
+    FeedForward
+    """
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = ntm.FeedForward(
         hidden_size=hidden_size,

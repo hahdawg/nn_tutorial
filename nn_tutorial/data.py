@@ -13,12 +13,18 @@ SIZE_VAL_OTHER = 0.5
 
 
 def load_data() -> Tuple[np.ndarray]:
+    """
+    Load source data.
+    """
     X, y = fetch_openml('mnist_784', version=1, return_X_y=True, as_frame=False)
     y = y.astype(int)
     return X, y
 
 
 def split_data(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray]:
+    """
+    Split data into (train, valid, test).
+    """
     random_state = check_random_state(0)
     permutation = random_state.permutation(X.shape[0])
     X = X[permutation]
@@ -51,6 +57,9 @@ def generate_batches(
     batch_size: int,
     num_epochs: int
 ) -> Generator:
+    """
+    Convert dmatrix into batch generator.
+    """
     # NOTE: Generating a single batch is very fast, so don't use a torch DataLoader here.
     # TODO: Don't allow small final batch for train/valid.
     for _ in range(num_epochs):
@@ -64,6 +73,12 @@ def generate_batches(
 def load_batch_generators(
     batch_size: int
 ) -> Tuple[Generator]:
+    """
+    Main data processing function.
+    1. Load data
+    2. Split data into (train, valid, test)
+    3. Return (train, valid, test) batch generators.
+    """
     num_epochs = 1_000_000
     X, y = load_data()
     X_tr, X_val, X_te, y_tr, y_val, y_te = split_data(X, y)
