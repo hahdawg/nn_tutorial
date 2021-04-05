@@ -51,6 +51,7 @@ def generate_batches(
     batch_size: int,
     num_epochs: int
 ) -> Generator:
+    # NOTE: Generating a single batch is very fast, so don't use a torch DataLoader here.
     # TODO: Don't allow small final batch for train/valid.
     for _ in range(num_epochs):
         for i_start in range(0, len(X), batch_size):
