@@ -37,6 +37,7 @@ def train_ff_model(
     """
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = ntm.FeedForward(
+        num_inputs=int(28**2),
         hidden_size=hidden_size,
         num_outputs=10,
         device=device

@@ -23,12 +23,12 @@ class FeedForward(nn.Module):
         super().__init__()
 
         if num_inputs:
-            self.hidden_layer = nn.Linear(in_features=hidden_size, out_features=hidden_size)
+            self.hidden_layer = nn.Linear(in_features=num_inputs, out_features=hidden_size)
         else:
             self.hidden_layer = nn.LazyLinear(out_features=hidden_size)  # This is new
         self.output_layer = nn.Linear(in_features=hidden_size, out_features=num_outputs)
         self.relu = nn.ReLU()
-        self.softmax = nn.Softmax()
+        self.softmax = nn.Softmax(dim=1)
         self.device = device
         self.to(self.device)
 
