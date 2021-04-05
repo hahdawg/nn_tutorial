@@ -122,3 +122,4 @@ notebooks/checkpoints/
 *.hdf
 *.backup
 *.tmp
+*.idea
